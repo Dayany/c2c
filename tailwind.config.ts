@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      textColor: {
+        DEFAULT: "#000000", // Set the default text color to black
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
