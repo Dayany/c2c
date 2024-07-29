@@ -6,7 +6,6 @@ import { Part } from "../types";
 export default function Home() {
   const [parts, setParts] = useState<Part[]>([]);
 
-  console.log(parts);
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch("/api/parts");
