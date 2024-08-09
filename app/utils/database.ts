@@ -1,23 +1,16 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mongoose from "mongoose";
 
 let isConnected: boolean = false;
 
-const client = new MongoClient(process.env.MONGODB_URI as string, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
 export const connectToDatabase = async () => {
+  mongoose.set("strictQuery", true);
   if (isConnected) {
     console.log("=> using existing database connection");
     return;
   }
   try {
     console.log("=> using new database connection");
-    await client.connect();
+    await mongoose.connect(process.env.MONGODB_URI as string, {});
 
     isConnected = true;
   } catch (error) {
