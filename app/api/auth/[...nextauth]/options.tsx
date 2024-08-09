@@ -1,6 +1,8 @@
 import type { NextAuthOptions } from "next-auth";
 import Github from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
+import User from "../../../models/user.js";
+import { connectToDatabase } from "../../../utils/database";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -15,17 +17,25 @@ export const options: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = {
-          id: 1,
-          username: "yamindayan@gmail.com",
-          password: "password",
-        };
-        if (
-          credentials?.username === user.username &&
-          credentials?.password === user.password
-        ) {
-          return user;
-        } else {
+        try {
+          await connectToDatabase();
+          let user = null;
+          const userExists = await User.findOne({
+            email: credentials?.username,
+          });
+
+          if (!userExists) {
+            user = await User.create({
+              email: credentials?.username.toLowerCase(),
+              username: credentials?.username.toLowerCase(),
+            });
+          } else {
+            user = userExists;
+          }
+
+          return user ? user : null;
+        } catch (error) {
+          console.log(error);
           return null;
         }
       },
