@@ -10,7 +10,9 @@ export const connectToDatabase = async () => {
   }
   try {
     console.log("=> using new database connection");
-    await mongoose.connect(process.env.MONGODB_URI as string, {});
+    await mongoose.connect(process.env.MONGODB_URI as string, {
+      dbName: "test",
+    });
 
     isConnected = true;
   } catch (error) {
