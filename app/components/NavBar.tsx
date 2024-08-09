@@ -4,7 +4,7 @@ import Link from "next/link";
 const Navbar = ({ session }) => {
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
-      <div className="text-white text-lg">Hello Joe</div>
+      <div className="text-white text-lg">{session?.username}</div>
       <div className="flex items-center space-x-4">
         <a href="/" className="text-white hover:underline">
           Home
