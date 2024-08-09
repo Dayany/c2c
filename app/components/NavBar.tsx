@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Session } from "next-auth";
 
 interface NavbarProps {
-  session: Session;
+  session: Session | null;
 }
 
 const Navbar = ({ session }: NavbarProps) => {
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
-      <div className="text-white text-lg">"display name"</div>
+      <div className="text-white text-lg">display name</div>
       <div className="flex items-center space-x-4">
         <a href="/" className="text-white hover:underline">
           Home
