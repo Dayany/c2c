@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { useEffect, useState } from "react";
 import CardParts from "./components/CardParts";
 import { Part } from "../types";
