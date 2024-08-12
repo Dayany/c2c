@@ -17,9 +17,9 @@ export default function Home() {
     fetchProducts();
   }, []);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-sky-50 font-black">
-      <div className="min-h-screen bg-gray-100 p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-white font-black ">
+      <div className="min-h-screen p-6 w-9/12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
           {parts.map((part) => (
             <CardParts key={part.id} part={part} />
           ))}
