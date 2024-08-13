@@ -39,7 +39,7 @@ export async function generateUploadUrl(
   });
 
   const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 60 });
-  return { success: true, url: uploadUrl };
+  return { success: true, fileName: rawKey, url: uploadUrl };
 }
 
 export async function uploadFileToS3(file: File) {

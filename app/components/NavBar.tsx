@@ -34,9 +34,9 @@ const Navbar = ({ session }: NavbarProps) => {
         <a href="/" className="text-white hover:underline">
           Home
         </a>
-        <PartsModalButton />
         {session ? (
           <>
+            <PartsModalButton />
             <input
               type="text"
               className="px-2 py-1 rounded bg-gray-700 text-white placeholder-gray-400 focus:outline-none"

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { generateUploadUrl } from "../s3UploadFile";
 import { computeSHA256 } from "../crypto.utils";
 import { useSession } from "next-auth/react";
+import { DEFAULT_S3_URL } from "@/constants";
 
-const UploadFile = () => {
+interface UploadFileProps {
+  handleFileUpload: (url: string) => void;
+}
+const UploadFile: React.FC<UploadFileProps> = ({ handleFileUpload }) => {
   const [file, setFile] = React.useState<File | null>(null);
   const [fileUploaded, setFileUploaded] = React.useState(false);
   const { data: session } = useSession();
@@ -40,6 +44,7 @@ const UploadFile = () => {
 
     if (result.status === 200) {
       setFileUploaded(true);
+      handleFileUpload(DEFAULT_S3_URL + signedURLResult.fileName);
     }
   };
   return (

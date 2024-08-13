@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Part } from "../../types";
+import UploadFile from "@/utils/components/UploadFile";
 
 interface PartsModalProps {
   isOpen: boolean;
@@ -24,6 +25,13 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
     setFormData({
       ...formData,
       [name]: value,
+    });
+  };
+
+  const handleFileUpload = (url: string) => {
+    setFormData({
+      ...formData,
+      imageUrl: url, // Set the imageUrl when the file is uploaded
     });
   };
 
@@ -97,12 +105,13 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
             >
               Image URL
             </label>
+            <UploadFile handleFileUpload={handleFileUpload} />
             <input
               type="text"
               name="imageUrl"
               value={formData.imageUrl || ""}
               onChange={handleChange}
-              className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              className="hidden"
             />
           </div>
           <div className="mb-4">

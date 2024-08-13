@@ -22,6 +22,7 @@ export async function POST(req: Request): Promise<Response> {
   } catch (error) {
     return new Response(
       JSON.stringify({
+        error,
         message: "There was a problem creating the part.",
       }),
       {
