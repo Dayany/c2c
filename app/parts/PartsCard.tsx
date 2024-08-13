@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { Part } from "../../types";
+import { DEFAULT_PART_IMAGE } from "../contants";
+
 interface CardProps {
   part: Part;
 }
@@ -10,7 +12,7 @@ const Card = ({ part }: CardProps) => {
     <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
       <Image
         className="w-full"
-        src={part.imageUrl}
+        src={part.imageUrl || DEFAULT_PART_IMAGE}
         alt={part.name}
         width="50"
         height="50"

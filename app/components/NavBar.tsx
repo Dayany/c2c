@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Session } from "next-auth";
 import Image from "next/image";
+import PartsModalButton from "@/parts/PartsModalButton";
 
 interface NavbarProps {
   session: Session | null;
@@ -34,6 +35,7 @@ const Navbar = ({ session }: NavbarProps) => {
         <a href="/" className="text-white hover:underline">
           Home
         </a>
+        <PartsModalButton />
         {session ? (
           <>
             <input

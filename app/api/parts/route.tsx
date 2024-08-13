@@ -1,21 +1,33 @@
 import { Part } from "../../../types";
 import { connectToDatabase } from "../../utils/database";
+import Parts from "../../models/parts";
 
 export async function GET() {
   await connectToDatabase();
-  // Create an array of 10 fictitious products
-  const parts: Part[] = Array.from({ length: 10 }, (v, i) => ({
-    id: i,
-    name: `Product ${i + 1}`,
-    price: (Math.random() * 100).toFixed(2),
-    imageUrl: `https://via.placeholder.com/300?text=Product+${i + 1}`, // Placeholder image URL
-    owner: "John Doe",
-    location: "New York, NY",
-    createdAt: new Date().toISOString,
-    carMake: "Toyota",
-    partNumber: "12345",
-    sold: false,
-  }));
 
+  const parts = await Parts.find({});
   return new Response(JSON.stringify(parts));
+}
+
+export async function POST(req: Request): Promise<Response> {
+  try {
+    await connectToDatabase();
+    const json = await req.json();
+    const part = new Parts(json);
+    await part.save();
+    return new Response(JSON.stringify({ message: "success", data: part }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        message: "There was a problem creating the part.",
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
 }

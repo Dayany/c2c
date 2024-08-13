@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
-import CardParts from "./components/CardParts";
+import CardParts from "./parts/PartsCard";
 import { Part } from "../types";
 
 export default function Home() {

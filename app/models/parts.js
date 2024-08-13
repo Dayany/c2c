@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 const PartSchema = new Schema({
   name: {
@@ -33,7 +34,7 @@ const PartSchema = new Schema({
     type: String,
     required: true,
   },
-  parthNumber: {
+  partNumber: {
     type: String,
     required: true,
   },
