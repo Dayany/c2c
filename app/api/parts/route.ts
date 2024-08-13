@@ -1,5 +1,5 @@
-import { connectToDatabase } from "../../utils/database";
-import Parts from "../../models/parts";
+import { connectToDatabase } from "@/utils/database";
+import Parts from "@/models/parts";
 
 export async function GET() {
   await connectToDatabase();

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { useEffect, useState } from "react";
-import CardParts from "./parts/PartsCard";
-import { Part } from "../types";
+import CardParts from "@/components/parts/PartsCard";
+import { Part } from "@/types";
 
 export default function Home() {
   const [parts, setParts] = useState<Part[]>([]);
@@ -16,6 +16,7 @@ export default function Home() {
 
     fetchProducts();
   }, []);
+  console.log(parts);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-white font-black ">
       <div className="min-h-screen p-6 w-9/12">

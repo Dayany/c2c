@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Part } from "../../types";
+import { Part } from "@/types";
 import UploadFile from "@/utils/components/UploadFile";
 
 interface PartsModalProps {
