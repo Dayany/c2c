@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Part } from "../../types";
-import { DEFAULT_PART_IMAGE } from "../contants";
+import { DEFAULT_PART_IMAGE } from "../constants";
 
 interface CardProps {
   part: Part;
