@@ -1,4 +1,3 @@
-import { Part } from "../../../types";
 import { connectToDatabase } from "../../utils/database";
 import Parts from "../../models/parts";
 
