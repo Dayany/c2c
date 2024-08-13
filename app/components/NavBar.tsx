@@ -10,7 +10,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({ session }: NavbarProps) => {
-  console.log(session?.user?.image);
   return (
     <nav className="bg-gray-800 p-4 flex justify-between items-center">
       {session ? (
@@ -45,7 +44,7 @@ const Navbar = ({ session }: NavbarProps) => {
             />
             <Link
               href="/api/auth/signout"
-              className="bg-gray-700 text-white px-4 py-2 rounded"
+              className="bg-gray-700 text-white px-4 py-2 rounded whitespace-nowrap"
             >
               Sign Out
             </Link>
