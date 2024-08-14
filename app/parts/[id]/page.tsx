@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 const PartPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [part, setPart] = useState<Part | null>(null);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   useEffect(() => {
     const fetchPart = async () => {
-      const res = await fetch(`http://localhost:3000/api/parts/${id}`);
+      const res = await fetch(`${baseUrl}/api/parts/${id}`);
       const partResult = await res.json();
       if (partResult) {
         setPart(partResult.data);
