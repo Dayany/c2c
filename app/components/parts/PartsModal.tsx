@@ -38,8 +38,6 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(formData);
-      console.log(JSON.stringify(formData));
       const res = await fetch("/api/parts", {
         method: "POST",
         headers: {

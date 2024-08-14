@@ -1,5 +1,5 @@
 export interface Part {
-  id: string;
+  _id: string;
   name: string;
   price: string;
   imageUrl?: string;
