@@ -11,14 +11,16 @@ const Card = ({ part }: CardProps) => {
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
       <Image
-        className="w-full"
+        className="h-52 max-h-52"
         src={part.imageUrl || DEFAULT_PART_IMAGE}
         alt={part.name}
-        width="50"
-        height="50"
+        width="300"
+        height="300"
       />
-      <div className="px-6 py-4">
-        <div className="text-black font-bold text-xl mb-2">{part.name}</div>
+      <div className="px-6 py-6 h-30">
+        <div className="text-black font-bold text-xl mb-2 truncate">
+          {part.name}
+        </div>
         <p className="text-gray-700 text-base">${part.price}</p>
       </div>
     </div>
