@@ -3,14 +3,17 @@ import Image from "next/image";
 import { Part } from "@/types";
 import { DEFAULT_S3_URL } from "@/constants";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const PartPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [part, setPart] = useState<Part | null>(null);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchPart = async () => {
+      if (!baseUrl) return;
       const res = await fetch(`${baseUrl}/api/parts/${id}`);
       const partResult = await res.json();
       if (partResult) {
@@ -23,7 +26,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
   if (!part) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <h1 className="text-3xl font-bold text-red-500">Part not found</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Loading...</h1>
       </div>
     );
   }
@@ -36,9 +39,9 @@ const PartPage = ({ params }: { params: { id: string } }) => {
             <Image
               src={part.imageUrl || DEFAULT_S3_URL}
               alt={part.name}
-              width={500}
-              height={500}
-              className="h-64 w-full object-cover md:w-64"
+              width={200}
+              height={200}
+              className="h-52 w-full object-cover md:w-52"
             />
           </div>
           <div className="p-8">
@@ -50,9 +53,18 @@ const PartPage = ({ params }: { params: { id: string } }) => {
               </span>
             </div>
             <div className="mt-6">
-              <button className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300">
-                Add to Cart
-              </button>
+              {session?.user?.email === part.owner ? (
+                <button className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300">
+                  Edit product
+                </button>
+              ) : (
+                <button
+                  className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300"
+                  disabled
+                >
+                  Buy
+                </button>
+              )}
             </div>
           </div>
         </div>

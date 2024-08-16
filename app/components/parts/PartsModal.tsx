@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Part } from "@/types";
 import UploadFile from "@/utils/components/UploadFile";
+import { useSession } from "next-auth/react";
 
 interface PartsModalProps {
   isOpen: boolean;
@@ -8,12 +9,15 @@ interface PartsModalProps {
 }
 
 const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
+  const { data: session } = useSession();
+  const owner: string = session?.user?.email || "";
   const [formData, setFormData] = useState<Partial<Part>>({
     name: "",
     price: "",
     imageUrl: "",
     location: "",
     description: "",
+    owner,
     carMake: "",
     partNumber: "",
   });
@@ -45,7 +49,6 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
         },
         body: JSON.stringify(formData),
       });
-      console.log(res);
 
       if (res.ok) {
         onClose(); // Close the modal
