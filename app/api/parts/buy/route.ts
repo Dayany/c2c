@@ -5,7 +5,6 @@ export async function PUT(req: Request): Promise<Response> {
   try {
     await connectToDatabase();
     const json = await req.json();
-    console.log("json", json);
     if (!json.id || !json.email)
       return new Response(
         JSON.stringify({

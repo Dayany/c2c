@@ -54,6 +54,13 @@ const PartsModal: React.FC<PartsModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormData({
+      ...formData,
+      owner: session?.user?.email || "",
+    });
+
+    if (formData.owner === "") return console.error("No user session found");
+
     try {
       const method = existingPart ? "PUT" : "POST";
       const res = await fetch("/api/parts", {
