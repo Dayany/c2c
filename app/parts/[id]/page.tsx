@@ -57,7 +57,15 @@ const PartPage = ({ params }: { params: { id: string } }) => {
         </h4>
       );
 
-    if (productOwner) return <PartsModalButton existingPart={part} />;
+    if (productOwner)
+      return (
+        <>
+          <PartsModalButton
+            className="bg-gray-800 p-2 px-4 rounded-md"
+            existingPart={part}
+          />
+        </>
+      );
 
     return (
       <button

@@ -13,6 +13,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
   handleFileUpload,
 }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState(existingFile || "");
   const [fileUploaded, setFileUploaded] = useState(!!existingFile);
   const { data: session } = useSession();
 
@@ -22,7 +23,8 @@ const UploadFile: React.FC<UploadFileProps> = ({
     }
   };
 
-  const sendFile = async () => {
+  const sendFile = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!file) return;
     const checkSum = await computeSHA256(file);
     const signedURLResult = await generateUploadUrl(
@@ -31,6 +33,9 @@ const UploadFile: React.FC<UploadFileProps> = ({
       checkSum,
       session,
     );
+
+    setFileName(file.name);
+
     if (!signedURLResult.success) {
       throw new Error(signedURLResult.message);
     }
@@ -49,17 +54,19 @@ const UploadFile: React.FC<UploadFileProps> = ({
     if (result.status === 200) {
       setFileUploaded(true);
       handleFileUpload(DEFAULT_S3_URL + signedURLResult.fileName);
+    } else {
+      setFileName("");
+      setFileUploaded(false);
     }
   };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
       {fileUploaded && (
         <>
           <div className="flex-grow text-sm text-gray-700">
             <span className="font-semibold text-xl">File Uploaded! File:</span>
-            <span className="font-bold text-xl">
-              {file?.name || existingFile}
-            </span>
+            <span className="font-bold text-xl">{fileName}</span>
           </div>
           <button
             onClick={() => {

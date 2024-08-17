@@ -9,7 +9,7 @@ interface CardProps {
 
 const Card = ({ part }: CardProps) => {
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg m-4">
+    <div className="max-w-60 rounded overflow-hidden shadow-lg m-4">
       <Image
         className="h-52 max-h-52"
         src={part.imageUrl || DEFAULT_PART_IMAGE}
