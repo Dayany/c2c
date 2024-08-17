@@ -24,8 +24,8 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Navbar session={session} />
-          <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-white font-black ">
-            <div className="min-h-screen p-6 w-9/12">{children}</div>
+          <main className="flex w-full flex-col items-center justify-between p-24 bg-white font-black ">
+            <div className="min-h-screen p-6 w-full">{children}</div>
           </main>
         </AuthProvider>
       </body>

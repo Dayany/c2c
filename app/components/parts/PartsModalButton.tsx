@@ -4,10 +4,12 @@ import { Part } from "@/types";
 
 type PartsModalButtonProps = {
   existingPart?: Part;
+  className?: string;
 };
 
 const PartsModalButton: React.FC<PartsModalButtonProps> = ({
   existingPart,
+  className,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -21,10 +23,7 @@ const PartsModalButton: React.FC<PartsModalButtonProps> = ({
 
   return (
     <div className="container my-auto mx-auto ">
-      <button
-        onClick={openModal}
-        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-      >
+      <button onClick={openModal} className={className}>
         {existingPart ? "Edit product" : "Add New Part"}
       </button>
       <PartsModal
