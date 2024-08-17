@@ -50,7 +50,6 @@ export async function PUT(req: Request): Promise<Response> {
     const updatedPart = await Parts.findByIdAndUpdate(json._id, json, {
       new: true,
     });
-    console.log(updatedPart);
 
     if (!updatedPart)
       return new Response(JSON.stringify({ message: "Part not found" }), {

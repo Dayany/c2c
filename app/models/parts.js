@@ -41,6 +41,14 @@ const PartSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  soldTo: {
+    type: String,
+    required: false,
+  },
+  soldDate: {
+    type: Date,
+    required: false,
+  },
 });
 
 const Parts = models.Parts || model("Parts", PartSchema);

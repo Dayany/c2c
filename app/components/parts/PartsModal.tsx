@@ -25,6 +25,9 @@ const PartsModal: React.FC<PartsModalProps> = ({
     owner,
     carMake: "",
     partNumber: "",
+    sold: false,
+    soldDate: null,
+    soldTo: "",
   });
 
   useEffect(() => {

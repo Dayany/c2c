@@ -10,4 +10,6 @@ export interface Part {
   carMake: string;
   partNumber: string;
   sold?: boolean;
+  soldTo?: string;
+  soldDate?: Date | null;
 }

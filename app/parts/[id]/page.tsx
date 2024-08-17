@@ -11,6 +11,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
   const [part, setPart] = useState<Part | null>(null);
   const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const { data: session } = useSession();
+  const productOwner: boolean = session?.user?.email === part?.owner;
 
   useEffect(() => {
     const fetchPart = async () => {
@@ -31,6 +32,42 @@ const PartPage = ({ params }: { params: { id: string } }) => {
       </div>
     );
   }
+
+  const buyProduct = async () => {
+    if (!session) return;
+    if (part.sold) return;
+    if (!baseUrl) return;
+    const res = await fetch(`${baseUrl}/api/parts/buy`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, email: session?.user?.email }),
+    });
+    if (res.ok) {
+      window.location.reload();
+    }
+  };
+
+  const showActions = () => {
+    if (part.sold)
+      return (
+        <h4 className="text-gray-700 text-xl border-2 border-gray-800 rounded-md  px-6 w-52 text-center">
+          SOLD!
+        </h4>
+      );
+
+    if (productOwner) return <PartsModalButton existingPart={part} />;
+
+    return (
+      <button
+        onClick={buyProduct}
+        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300"
+      >
+        Buy
+      </button>
+    );
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -53,18 +90,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
                 ${part.price}
               </span>
             </div>
-            <div className="mt-6">
-              {session?.user?.email === part.owner ? (
-                <PartsModalButton existingPart={part} />
-              ) : (
-                <button
-                  className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300"
-                  disabled
-                >
-                  Buy
-                </button>
-              )}
-            </div>
+            <div className="mt-6">{showActions()}</div>
           </div>
         </div>
       </div>
