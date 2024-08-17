@@ -15,14 +15,13 @@ const PartsModal: React.FC<PartsModalProps> = ({
   onClose,
 }) => {
   const { data: session } = useSession();
-  const owner: string = session?.user?.email || "";
   const [formData, setFormData] = useState<Partial<Part>>({
     name: "",
     price: "",
     imageUrl: "",
     location: "",
     description: "",
-    owner,
+    owner: session?.user?.email || "",
     carMake: "",
     partNumber: "",
     sold: false,
