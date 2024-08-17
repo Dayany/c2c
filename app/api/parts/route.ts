@@ -4,7 +4,7 @@ import Parts from "@/models/parts";
 export async function GET() {
   await connectToDatabase();
 
-  const parts = await Parts.find({});
+  const parts = await Parts.find({}).sort({ createdAt: -1 });
   return new Response(JSON.stringify(parts));
 }
 
