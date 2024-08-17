@@ -4,6 +4,7 @@ import { Part } from "@/types";
 import { DEFAULT_S3_URL } from "@/constants";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import PartsModalButton from "@/components/parts/PartsModalButton";
 
 const PartPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -54,9 +55,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
             </div>
             <div className="mt-6">
               {session?.user?.email === part.owner ? (
-                <button className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300">
-                  Edit product
-                </button>
+                <PartsModalButton existingPart={part} />
               ) : (
                 <button
                   className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300"

@@ -5,11 +5,15 @@ import { useSession } from "next-auth/react";
 import { DEFAULT_S3_URL } from "@/constants";
 
 interface UploadFileProps {
+  existingFile?: string;
   handleFileUpload: (url: string) => void;
 }
-const UploadFile: React.FC<UploadFileProps> = ({ handleFileUpload }) => {
-  const [file, setFile] = React.useState<File | null>(null);
-  const [fileUploaded, setFileUploaded] = React.useState(false);
+const UploadFile: React.FC<UploadFileProps> = ({
+  existingFile,
+  handleFileUpload,
+}) => {
+  const [file, setFile] = useState<File | null>(null);
+  const [fileUploaded, setFileUploaded] = useState(!!existingFile);
   const { data: session } = useSession();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +57,9 @@ const UploadFile: React.FC<UploadFileProps> = ({ handleFileUpload }) => {
         <>
           <div className="flex-grow text-sm text-gray-700">
             <span className="font-semibold text-xl">File Uploaded! File:</span>
-            <span className="font-bold text-xl"> {file?.name}</span>
+            <span className="font-bold text-xl">
+              {file?.name || existingFile}
+            </span>
           </div>
           <button
             onClick={() => {

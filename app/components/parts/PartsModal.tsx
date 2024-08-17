@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Part } from "@/types";
 import UploadFile from "@/utils/components/UploadFile";
 import { useSession } from "next-auth/react";
 
 interface PartsModalProps {
   isOpen: boolean;
+  existingPart?: Part;
   onClose: () => void;
 }
 
-const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
+const PartsModal: React.FC<PartsModalProps> = ({
+  isOpen,
+  existingPart,
+  onClose,
+}) => {
   const { data: session } = useSession();
   const owner: string = session?.user?.email || "";
   const [formData, setFormData] = useState<Partial<Part>>({
@@ -21,6 +26,12 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
     carMake: "",
     partNumber: "",
   });
+
+  useEffect(() => {
+    if (existingPart) {
+      setFormData(existingPart);
+    }
+  }, [existingPart]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -42,8 +53,9 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const method = existingPart ? "PUT" : "POST";
       const res = await fetch("/api/parts", {
-        method: "POST",
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -52,6 +64,7 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
 
       if (res.ok) {
         onClose(); // Close the modal
+        window.location.reload();
       } else {
         console.error("Failed to create part");
       }
@@ -106,7 +119,10 @@ const PartsModal: React.FC<PartsModalProps> = ({ isOpen, onClose }) => {
             >
               Image URL
             </label>
-            <UploadFile handleFileUpload={handleFileUpload} />
+            <UploadFile
+              handleFileUpload={handleFileUpload}
+              existingFile={formData.imageUrl}
+            />
             <input
               type="text"
               name="imageUrl"

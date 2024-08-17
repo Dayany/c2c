@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import PartsModal from "./PartsModal";
+import { Part } from "@/types";
 
-const PartsModalButton: React.FC = () => {
+type PartsModalButtonProps = {
+  existingPart?: Part;
+};
+
+const PartsModalButton: React.FC<PartsModalButtonProps> = ({
+  existingPart,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -18,9 +25,13 @@ const PartsModalButton: React.FC = () => {
         onClick={openModal}
         className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
       >
-        Add New Part
+        {existingPart ? "Edit product" : "Add New Part"}
       </button>
-      <PartsModal isOpen={isModalOpen} onClose={closeModal} />
+      <PartsModal
+        isOpen={isModalOpen}
+        existingPart={existingPart}
+        onClose={closeModal}
+      />
     </div>
   );
 };
