@@ -78,7 +78,9 @@ const PartsModal: React.FC<PartsModalProps> = ({
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="text-gray-700 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full p-6">
-        <h2 className="text-xl font-bold mb-4">Add New Part</h2>
+        <h2 className="text-xl font-bold mb-4">
+          {existingPart ? "Edit Product" : "Add New Part"}
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
