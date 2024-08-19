@@ -9,22 +9,19 @@ interface UploadFileProps {
   existingFile?: string;
   handleFileUpload: (url: string) => void;
 }
-const UploadFile: React.FC<UploadFileProps> = ({
-  existingFile,
-  handleFileUpload,
-}) => {
+const UploadFile = ({ existingFile, handleFileUpload }: UploadFileProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState(existingFile || "");
   const [fileUploaded, setFileUploaded] = useState(!!existingFile);
   const { data: session } = useSession();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
   };
 
-  const sendFile = async (e: React.FormEvent) => {
+  const sendFile = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     if (!file) return;
     const checkSum = await computeSHA256(file);
@@ -70,7 +67,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
             <Image src={fileName} height={100} width={100} alt="File" />
           </div>
           <button
-            onClick={() => {
+            onClick={(): void => {
               setFileUploaded(false);
               setFile(null);
             }}
