@@ -13,8 +13,8 @@ const PartPage = ({ params }: { params: { id: string } }) => {
   const { data: session } = useSession();
   const productOwner: boolean = session?.user?.email === part?.owner;
 
-  useEffect(() => {
-    const fetchPart = async () => {
+  useEffect((): void => {
+    const fetchPart = async (): Promise<void> => {
       if (!baseUrl) return;
       const res = await fetch(`${baseUrl}/api/parts/${id}`);
       const partResult = await res.json();
@@ -23,7 +23,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
       }
     };
     fetchPart();
-  }, [id]);
+  }, [id, baseUrl]);
 
   if (!part) {
     return (
@@ -33,7 +33,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const buyProduct = async () => {
+  const buyProduct = async (): Promise<void> => {
     if (!session) return;
     if (part.sold) return;
     if (!baseUrl) return;
