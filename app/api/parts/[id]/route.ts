@@ -5,8 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } },
-) {
+): Promise<NextResponse> {
   const { id } = params;
+
+  if (!id)
+    return new NextResponse(JSON.stringify({ message: "ID Not found" }), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
 
   try {
     await connectToDatabase();

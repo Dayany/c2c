@@ -3,6 +3,7 @@ import { generateUploadUrl } from "../s3UploadFile";
 import { computeSHA256 } from "../crypto.utils";
 import { useSession } from "next-auth/react";
 import { DEFAULT_S3_URL } from "@/constants";
+import Image from "next/image";
 
 interface UploadFileProps {
   existingFile?: string;
@@ -66,7 +67,7 @@ const UploadFile: React.FC<UploadFileProps> = ({
         <>
           <div className="flex-grow text-sm text-gray-700">
             <span className="font-semibold text-xl">File Uploaded! File:</span>
-            <span className="font-bold text-xl">{fileName}</span>
+            <Image src={fileName} height={100} width={100} alt="File" />
           </div>
           <button
             onClick={() => {

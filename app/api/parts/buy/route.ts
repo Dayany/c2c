@@ -1,12 +1,13 @@
 import { connectToDatabase } from "@/utils/database";
 import Parts from "@/models/parts";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(req: Request): Promise<Response> {
+export async function PUT(req: NextRequest): Promise<NextResponse> {
   try {
     await connectToDatabase();
     const json = await req.json();
     if (!json.id || !json.email)
-      return new Response(
+      return new NextResponse(
         JSON.stringify({
           message: "Missing information [id or email] in the request.",
         }),
@@ -17,14 +18,13 @@ export async function PUT(req: Request): Promise<Response> {
       );
 
     const updateData = { sold: true, soldTo: json.email, soldDate: new Date() };
-    console.log("updateData", updateData);
 
     const updatedPart = await Parts.findByIdAndUpdate(json.id, updateData, {
       new: true,
     });
 
     if (!updatedPart)
-      return new Response(
+      return new NextResponse(
         JSON.stringify({ message: "Part not found/updated" }),
         {
           status: 404,
@@ -32,7 +32,7 @@ export async function PUT(req: Request): Promise<Response> {
         },
       );
 
-    return new Response(
+    return new NextResponse(
       JSON.stringify({ message: "success", data: updatedPart }),
       {
         status: 200,
@@ -40,7 +40,7 @@ export async function PUT(req: Request): Promise<Response> {
       },
     );
   } catch (error) {
-    return new Response(
+    return new NextResponse(
       JSON.stringify({
         error,
         message: "There was a problem creating the part.",
