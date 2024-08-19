@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let isConnected: boolean = false;
 
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (): Promise<void> => {
   mongoose.set("strictQuery", true);
   if (isConnected) {
     console.log("=> using existing database connection");

@@ -2,7 +2,7 @@ import { connectToDatabase } from "@/utils/database";
 import Parts from "@/models/parts";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   await connectToDatabase();
   const parts = await Parts.find({}).sort({ createdAt: -1 });
   return new NextResponse(JSON.stringify(parts));
