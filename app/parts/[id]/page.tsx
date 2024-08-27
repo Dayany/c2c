@@ -1,53 +1,34 @@
-"use client";
 import Image from "next/image";
-import { Part } from "@/types";
 import { DEFAULT_S3_URL } from "@/constants";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import PartsModalButton from "@/components/parts/PartsModalButton";
+import { Part } from "@/types";
+import { getServerSession } from "next-auth";
+import BuyProduct from "@/components/calls/BuyProduct.tsx";
 
-const PartPage = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
-  const [part, setPart] = useState<Part | null>(null);
+async function fetchData(id: string): Promise<Part | null> {
   const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
-  const { data: session } = useSession();
-  const productOwner: boolean = session?.user?.email === part?.owner;
+  const response = await fetch(`${baseUrl}/api/parts/${id}`);
 
-  useEffect((): void => {
-    const fetchPart = async (): Promise<void> => {
-      if (!baseUrl) return;
-      const res = await fetch(`${baseUrl}/api/parts/${id}`);
-      const partResult = await res.json();
-      if (partResult) {
-        setPart(partResult.data);
-      }
-    };
-    fetchPart();
-  }, [id, baseUrl]);
+  if (!response.ok) {
+    return null;
+  }
+  return response.json();
+}
 
-  if (!part) {
+export default async function PartPage({ params }: { params: { id: string } }) {
+  const response = await fetchData(params.id);
+  const session = getServerSession();
+  const email: string | undefined = session?.user?.email;
+
+  if (!response) {
     return (
       <div className="flex justify-center items-center h-screen">
         <h1 className="text-3xl font-bold text-gray-800">Loading...</h1>
       </div>
     );
   }
-
-  const buyProduct = async (): Promise<void> => {
-    if (!session) return;
-    if (part.sold) return;
-    if (!baseUrl) return;
-    const res = await fetch(`${baseUrl}/api/parts/buy`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id, email: session?.user?.email }),
-    });
-    if (res.ok) {
-      window.location.reload();
-    }
-  };
+  const part = response.data;
+  const productOwner: boolean = email === part?.owner;
 
   const showActions = () => {
     if (part.sold)
@@ -60,6 +41,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
     if (productOwner)
       return (
         <>
+          <h1>Hello</h1>
           <PartsModalButton
             className="bg-gray-800 p-2 px-4 rounded-md"
             existingPart={part}
@@ -67,14 +49,7 @@ const PartPage = ({ params }: { params: { id: string } }) => {
         </>
       );
 
-    return (
-      <button
-        onClick={buyProduct}
-        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300"
-      >
-        Buy
-      </button>
-    );
+    return <BuyProduct part={part} email={email} />;
   };
 
   return (
@@ -104,6 +79,4 @@ const PartPage = ({ params }: { params: { id: string } }) => {
       </div>
     </div>
   );
-};
-
-export default PartPage;
+}
