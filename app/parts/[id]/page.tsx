@@ -2,10 +2,14 @@ import Image from "next/image";
 import { DEFAULT_S3_URL } from "@/constants";
 import PartsModalButton from "@/components/parts/PartsModalButton";
 import { Part } from "@/types";
-import { getServerSession } from "next-auth";
-import BuyProduct from "@/components/calls/BuyProduct.tsx";
+import { getServerSession } from "next-auth/next";
+import BuyProduct from "@/components/calls/BuyProduct";
 
-async function fetchData(id: string): Promise<Part | null> {
+type ResponseData = {
+  message: String;
+  data: Part;
+};
+async function fetchData(id: string): Promise<ResponseData | null> {
   const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const response = await fetch(`${baseUrl}/api/parts/${id}`);
 
@@ -16,9 +20,10 @@ async function fetchData(id: string): Promise<Part | null> {
 }
 
 export default async function PartPage({ params }: { params: { id: string } }) {
-  const response = await fetchData(params.id);
-  const session = getServerSession();
-  const email: string | undefined = session?.user?.email;
+  const response: ResponseData | null = await fetchData(params.id);
+  const session = await getServerSession();
+
+  const email: string | undefined = session?.user?.email || undefined;
 
   if (!response) {
     return (
@@ -27,7 +32,8 @@ export default async function PartPage({ params }: { params: { id: string } }) {
       </div>
     );
   }
-  const part = response.data;
+  const part: Part = response?.data;
+
   const productOwner: boolean = email === part?.owner;
 
   const showActions = () => {
@@ -49,6 +55,7 @@ export default async function PartPage({ params }: { params: { id: string } }) {
         </>
       );
 
+    if (!email) return;
     return <BuyProduct part={part} email={email} />;
   };
 

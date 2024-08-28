@@ -1,7 +1,12 @@
 "use client";
 import { Part } from "@/types";
 
-const BuyProduct = (part: Part, email: string) => {
+type BuyProductProps = {
+  part: Part;
+  email: string;
+};
+
+const BuyProduct = ({ part, email }: BuyProductProps) => {
   const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
 
   const sendBuyProduct = async () => {
