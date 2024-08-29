@@ -32,8 +32,6 @@ const UploadFile = ({ existingFile, handleFileUpload }: UploadFileProps) => {
       session,
     );
 
-    setFileName(file.name);
-
     if (!signedURLResult.success) {
       throw new Error(signedURLResult.message);
     }
@@ -52,6 +50,7 @@ const UploadFile = ({ existingFile, handleFileUpload }: UploadFileProps) => {
     if (result.status === 200) {
       setFileUploaded(true);
       handleFileUpload(DEFAULT_S3_URL + signedURLResult.fileName);
+      setFileName(DEFAULT_S3_URL + signedURLResult.fileName);
     } else {
       setFileName("");
       setFileUploaded(false);
