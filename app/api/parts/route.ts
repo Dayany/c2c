@@ -3,9 +3,20 @@ import Parts from "@/models/parts";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(): Promise<NextResponse> {
-  await connectToDatabase();
-  const parts = await Parts.find({}).sort({ createdAt: -1 });
-  return new NextResponse(JSON.stringify(parts));
+  try {
+    await connectToDatabase();
+    const parts = await Parts.find({}).sort({ createdAt: -1 });
+    console.log(parts); // For debugging purposes
+    return new NextResponse(JSON.stringify(parts), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error fetching parts:", error);
+    return new NextResponse(
+      JSON.stringify({ error: "Failed to fetch parts" }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
+  }
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {

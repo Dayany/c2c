@@ -4,7 +4,7 @@ import { Part } from "@/types";
 import Link from "next/link";
 
 async function fetchData(): Promise<Part[] | null> {
-  const baseUrl: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl: string | undefined = process.env.NEXTAUTH_URL;
   const response = await fetch(`${baseUrl}/api/parts`);
 
   if (!response.ok) {
